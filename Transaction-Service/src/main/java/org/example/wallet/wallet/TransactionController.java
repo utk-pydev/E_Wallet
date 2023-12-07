@@ -1,4 +1,4 @@
 package org.example.wallet.wallet;
 
-public class NotificationService {
+public class TransactionController {
 }
