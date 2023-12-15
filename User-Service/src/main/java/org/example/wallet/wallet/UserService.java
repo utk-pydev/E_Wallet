@@ -17,4 +17,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findByPhoneNumber(phoneNumber);
     }
 
+    public void createUser(User user){
+        userRepository.save(user);
+    }
 }
