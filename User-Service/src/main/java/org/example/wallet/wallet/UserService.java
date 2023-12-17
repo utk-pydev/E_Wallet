@@ -6,6 +6,10 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 public class UserService implements UserDetailsService {
 
@@ -19,5 +23,15 @@ public class UserService implements UserDetailsService {
 
     public void createUser(User user){
         userRepository.save(user);
+    }
+
+    public List<Optional<User>> getUsersById(List<Integer> ids){
+       return ids.stream().
+                map(userRepository::findById)
+                .collect(Collectors.toList());
+    }
+
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
     }
 }

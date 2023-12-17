@@ -41,6 +41,8 @@ public class User implements Serializable, UserDetails {
     @Column(unique = true)
     private String identifierValue;
 
+    private UserIdentifier userIdentifier;
+
     @CreationTimestamp
     private Date createdOn;
 
