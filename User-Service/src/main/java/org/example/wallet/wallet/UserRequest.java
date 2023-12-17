@@ -23,8 +23,6 @@ public class UserRequest {
 
     private String Country;
     private String dob;
-
-    @NotBlank
     private String authorities;
     private String identifierValue;
 

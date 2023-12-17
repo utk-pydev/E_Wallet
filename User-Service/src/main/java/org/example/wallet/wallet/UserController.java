@@ -21,7 +21,7 @@ public class UserController {
     public void storeUser(@RequestBody UserRequest userRequest)
     {
        try {
-            userService.createUser(userRequest.to());
+            userService.createUser(userRequest);
        }catch (Exception ex){
             logger.info(ex.getMessage());
        }
