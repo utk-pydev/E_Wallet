@@ -1,6 +1,7 @@
 package org.example.wallet.wallet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.jose4j.json.internal.json_simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,7 +38,16 @@ public class UserService implements UserDetailsService {
         User user = userRequest.to();
         user.setPassword(encryptPwd(user.getPassword()));
         user.setAuthorities(String.valueOf(UserConstants.USER_AUTHORITY));
-        userRepository.save(user);
+        user = userRepository.save(user);
+
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("userId", user.getId());
+        jsonObject.put("phoneNumber", user.getPhoneNumber());
+        jsonObject.put("identifierValue", user.getIdentifierValue());
+        jsonObject.put("userIdentifier", user.getIdentifierValue());
+
+        kafkaTemplate.send("User_Created",  ObjectMapper.writeValueAsString(jsonObject));
+
     }
 
     public List<Optional<User>> getUsersById(List<Integer> ids){
