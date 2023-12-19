@@ -1,5 +1,6 @@
 package org.example.wallet.wallet;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jose4j.json.internal.json_simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class UserService implements UserDetailsService {
         return userRepository.findByPhoneNumber(phoneNumber);
     }
 
-    public void createUser(UserRequest userRequest){
+    public void createUser(UserRequest userRequest) throws JsonProcessingException {
         User user = userRequest.to();
         user.setPassword(encryptPwd(user.getPassword()));
         user.setAuthorities(String.valueOf(UserConstants.USER_AUTHORITY));
@@ -46,8 +47,7 @@ public class UserService implements UserDetailsService {
         jsonObject.put("identifierValue", user.getIdentifierValue());
         jsonObject.put("userIdentifier", user.getIdentifierValue());
 
-        kafkaTemplate.send("User_Created",  ObjectMapper.writeValueAsString(jsonObject));
-
+        kafkaTemplate.send("User_Created",  objectMapper.writeValueAsString(jsonObject));
     }
 
     public List<Optional<User>> getUsersById(List<Integer> ids){
