@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 @Service
 public class WalletService {
-    private static Logger logger = (Logger) LoggerFactory.getLogger(WalletService.class);
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(WalletService.class);
 
     @Autowired
     WalletRepository walletRepository;
