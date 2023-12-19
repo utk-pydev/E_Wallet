@@ -8,14 +8,18 @@
         <artifactId>E-Wallet</artifactId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
-
     <groupId>org.example</groupId>
     <artifactId>Wallet-Service</artifactId>
-
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-
+    <dependencies>
+        <dependency>
+            <groupId>org.example</groupId>
+            <artifactId>utils</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>
