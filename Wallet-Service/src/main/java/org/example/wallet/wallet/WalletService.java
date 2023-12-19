@@ -23,8 +23,8 @@ public class WalletService {
     @Autowired
     KafkaTemplate<String, String>kafkaTemplate;
 
-    public void createWallet(String msg) throws ParseException{
-        JSONObject data = (JSONObject) new JSONParser().parse(msg);
+    public void createWallet(String msg) throws ParseException, org.apache.tomcat.util.json.ParseException {
+        JSONObject data = (JSONObject) new JSONParser(msg).parse();
 
         String phoneNumber = (String) data.get(CommonConstants.USER_CREATION_TOPIC_PHONE_NUMBER);
         Long userId = (Long) data.get(CommonConstants.USER_CREATION_TOPIC_USERID);
