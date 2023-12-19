@@ -18,30 +18,15 @@ public class Wallet {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    private String name;
+    private Long userId;
 
     @Column(unique = true)
     private String phoneNumber;
 
-    @Column(unique = true)
-    private String email;
+    private Double balance;
 
-    private String password;
-
-    private String Country;
-    private String dob;
-
-    private String authorities;
     @Column(unique = true)
     private String identifierValue;
-
+    @Enumerated(value = EnumType.STRING)
     private UserIdentifier userIdentifier;
-
-    @CreationTimestamp
-    private Date createdOn;
-
-    @CreationTimestamp
-    private Date updatedOn;
-
-
 }
