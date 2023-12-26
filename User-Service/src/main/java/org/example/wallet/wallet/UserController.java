@@ -28,7 +28,7 @@ public class UserController {
     }
 
     @GetMapping("/User")
-    List<Optional<User>> getUsers(@RequestParam List<Integer> id){
+    List<Optional<User>> getUsers(@RequestParam(required = false) List<Integer> id){
         try{
             return userService.getUsersById(id);
         }catch (Exception ex){

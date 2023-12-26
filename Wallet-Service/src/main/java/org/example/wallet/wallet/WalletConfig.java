@@ -49,5 +49,4 @@ public class WalletConfig {
     KafkaTemplate<String, String> getKafkaTemplate(){
         return new KafkaTemplate<>(getProducerFactory());
     }
-
 }

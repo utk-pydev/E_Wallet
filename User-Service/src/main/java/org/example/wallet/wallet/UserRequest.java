@@ -4,7 +4,14 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.*;
 
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class UserRequest {
 
     @NotBlank
@@ -25,7 +32,7 @@ public class UserRequest {
     private String dob;
     private String authorities;
     private String identifierValue;
-
+    private UserIdentifier userIdentifier;
     public User to(){
         return User.builder()
                 .name(name)
@@ -35,6 +42,7 @@ public class UserRequest {
                 .Country(Country)
                 .phoneNumber(phoneNumber)
                 .identifierValue(identifierValue)
+                .userIdentifier(userIdentifier)
                 .authorities(authorities)
                 .build();
     }

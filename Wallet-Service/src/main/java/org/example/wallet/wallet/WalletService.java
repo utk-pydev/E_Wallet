@@ -2,10 +2,11 @@ package org.example.wallet.wallet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.util.JSONPObject;
-import org.apache.tomcat.util.json.JSONParser;
 import org.jose4j.json.internal.json_simple.JSONObject;
+import org.jose4j.json.internal.json_simple.parser.JSONParser;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -14,8 +15,6 @@ import java.util.logging.Logger;
 
 @Service
 public class WalletService {
-    private static final Logger logger = (Logger) LoggerFactory.getLogger(WalletService.class);
-
     @Autowired
     WalletRepository walletRepository;
     @Autowired
@@ -23,8 +22,10 @@ public class WalletService {
     @Autowired
     KafkaTemplate<String, String>kafkaTemplate;
 
-    public void createWallet(String msg) throws ParseException, org.apache.tomcat.util.json.ParseException {
-        JSONObject data = (JSONObject) new JSONParser(msg).parse();
+
+    @KafkaListener(topics = CommonConstants.USER_CREATION_TOPIC, groupId = "group123")
+    public void createWallet(String msg) throws ParseException, org.jose4j.json.internal.json_simple.parser.ParseException {
+        JSONObject data = (JSONObject) new JSONParser().parse(msg);
 
         String phoneNumber = (String) data.get(CommonConstants.USER_CREATION_TOPIC_PHONE_NUMBER);
         Long userId = (Long) data.get(CommonConstants.USER_CREATION_TOPIC_USERID);

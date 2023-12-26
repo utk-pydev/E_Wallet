@@ -45,9 +45,9 @@ public class UserService implements UserDetailsService {
         jsonObject.put("userId", user.getId());
         jsonObject.put("phoneNumber", user.getPhoneNumber());
         jsonObject.put("identifierValue", user.getIdentifierValue());
-        jsonObject.put("userIdentifier", user.getIdentifierValue());
+        jsonObject.put("userIdentifier", user.getUserIdentifier());
 
-        kafkaTemplate.send("User_Created",  objectMapper.writeValueAsString(jsonObject));
+        kafkaTemplate.send(CommonConstants.USER_CREATION_TOPIC , objectMapper.writeValueAsString(jsonObject));
     }
 
     public List<Optional<User>> getUsersById(List<Integer> ids){

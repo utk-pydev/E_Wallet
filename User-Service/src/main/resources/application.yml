@@ -1,5 +1,5 @@
 server:
-  port: 9000
+  port: 9096
 spring:
   jpa:
     hibernate:
