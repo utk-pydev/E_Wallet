@@ -4,10 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -23,8 +20,14 @@ public class Transaction {
     private int id;
 
     private String sender;
-    private String receiver;
 
+    private String receiver;
+    @Column(unique = true)
+    private String transactionUUID;
+
+    private String reason;
+
+    private Double amount;
     @CreationTimestamp
     private Date createdAt;
 
