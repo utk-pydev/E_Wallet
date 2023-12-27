@@ -1,4 +1,7 @@
 package org.example.wallet.wallet;
 
-public class TransactionStatus {
+public enum TransactionStatus {
+    PENDING,
+    SUCCESSFUL,
+    FAILED
 }
