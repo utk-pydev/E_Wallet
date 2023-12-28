@@ -21,13 +21,14 @@ public class UserApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        User txnServiceUser = User.builder()
+        User txnServiceUser = User
+                .builder()
                 .phoneNumber("txn_service")
                 .password(passwordEncoder.encode("txn123"))
                 .authorities(UserConstants.SERVICE_AUTHORITY.toString())
                 .email("txn@gmail.com")
-                .userIdentifier("")
+                .userIdentifier(UserIdentifier.valueOf("service_id"))
                 .identifierValue("txn123")
-                            .build();
+                .build();
     }
 }

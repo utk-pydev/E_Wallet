@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.core.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Properties;
 
@@ -18,6 +19,11 @@ public class TransactionConfig {
     @Bean
     PasswordEncoder getPE(){
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    RestTemplate getTemplate(){
+        return new RestTemplate();
     }
 
     Properties getCProperties(){
