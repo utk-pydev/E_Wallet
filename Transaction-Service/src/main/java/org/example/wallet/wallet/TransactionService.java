@@ -91,8 +91,16 @@ public class TransactionService implements UserDetailsService {
         String sender = (String) data.get("sender");
         Double amount = (Double) data.get("amount");
 
+        WalletUpdateStatus walletUpdateStatus = WalletUpdateStatus.valueOf((String)data.get("walletUpdateStatus"));
+        JSONObject senderObj = getUserFromUserService(sender);
+        String senderEmail = (String) senderObj.get("email");
+        String receiverEmail = null;
 
+        if(walletUpdateStatus == WalletUpdateStatus.SUCCESS){
 
+        }
+        else{
+        }
 
     }
 
