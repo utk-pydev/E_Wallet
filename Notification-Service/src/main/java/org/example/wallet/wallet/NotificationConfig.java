@@ -42,8 +42,14 @@ public class NotificationConfig {
     JavaMailSender getMailSender(){
         JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
         javaMailSender.setHost("smtp.gmail.com");
+        javaMailSender.setPort(587);
+        javaMailSender.setUsername("utkarsh.vashisth.work@gmail.com");
+        javaMailSender.setPassword("ozsw vpyk zenx ttoe");
+
+        Properties properties = javaMailSender.getJavaMailProperties();
+        properties.put("mail.smtp.starttls.enable", true);
+        properties.put("mail.debug", true);
 
         return  javaMailSender;
     }
-
 }
