@@ -1,13 +1,16 @@
 package org.example.wallet.wallet;
 
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
-import org.apache.kafka.common.protocol.types.Field;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.jose4j.json.internal.json_simple.JSONObject;
+import org.jose4j.json.internal.json_simple.parser.JSONParser;
+import org.jose4j.json.internal.json_simple.parser.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,7 +18,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -35,6 +37,9 @@ public class TransactionService implements UserDetailsService {
 
     @Autowired
     KafkaTemplate<String, String> kafkaTemplate;
+
+    @Autowired
+    ObjectMapper objectMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -56,7 +61,7 @@ public class TransactionService implements UserDetailsService {
         );
     }
 
-    public void initiateTxn(String senderId, String receiverId, String reason, Double amount){
+    public String initiateTxn(String senderId, String receiverId, String reason, Double amount) throws JsonProcessingException {
         Transaction transaction = Transaction.builder()
                 .receiver(receiverId)
                 .sender(senderId)
@@ -72,9 +77,25 @@ public class TransactionService implements UserDetailsService {
         jsonObject.put("amount", amount);
         jsonObject.put("txnId", transaction.getTransactionUUID());
 
+        kafkaTemplate.send(CommonConstants.TRANSACTION_CREATION_TOPIC, objectMapper.writeValueAsString(jsonObject));
+
+        return transaction.getTransactionUUID();
+    }
+
+    @KafkaListener(topics = CommonConstants.WALLET_UPDATED_TOPIC, groupId = "group123")
+    public void updateTxn(String msg) throws ParseException {
+        JSONObject data = (JSONObject) new JSONParser().parse(msg);
+
+        String txnId = (String) data.get("txnId");
+        String receiverId = (String) data.get("receiver");
+        String sender = (String) data.get("sender");
+        Double amount = (Double) data.get("amount");
+
+
 
 
     }
+
 
     private JSONObject getUserFromUserService(String username){
         HttpHeaders httpHeaders = new HttpHeaders();

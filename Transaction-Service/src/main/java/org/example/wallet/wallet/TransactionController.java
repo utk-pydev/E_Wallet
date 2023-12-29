@@ -1,5 +1,6 @@
 package org.example.wallet.wallet;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.kafka.common.protocol.types.Field;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -23,9 +24,9 @@ public class TransactionController {
     KafkaTemplate<String, String>kafkaTemplate;
 
     @PostMapping("/txn")
-    public void updateTransaction(@RequestParam String receiverId, @RequestBody String reason, @RequestBody Double amount){
+    public void updateTransaction(@RequestParam String receiverId, @RequestBody String reason, @RequestBody Double amount) throws JsonProcessingException {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        transactionService.initiateTxn(userDetails.getUsername(), receiverId, reason, amount);
+        String res =  transactionService.initiateTxn(userDetails.getUsername(), receiverId, reason, amount);
     }
 
 }
