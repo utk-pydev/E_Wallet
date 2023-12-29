@@ -97,10 +97,17 @@ public class TransactionService implements UserDetailsService {
         String receiverEmail = null;
 
         if(walletUpdateStatus == WalletUpdateStatus.SUCCESS){
-
+            JSONObject receiverObj = getUserFromUserService(receiverId);
+            receiverEmail = (String) receiverObj.get("email");
+            transactionRepository.updateTxn(txnId, TransactionStatus.SUCCESSFUL);
         }
         else{
+            transactionRepository.updateTxn(txnId, TransactionStatus.FAILED);
         }
+
+        String senderMsg = "Hi, your transaction with id "+txnId+" got "+walletUpdateStatus;
+        JSONObject senderEmailObj = new JSONObject();
+        senderEmailObj.put("email", senderEmail);
 
     }
 
