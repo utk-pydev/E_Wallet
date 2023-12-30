@@ -83,7 +83,7 @@ public class TransactionService implements UserDetailsService {
     }
 
     @KafkaListener(topics = CommonConstants.WALLET_UPDATED_TOPIC, groupId = "group123")
-    public void updateTxn(String msg) throws ParseException {
+    public void updateTxn(String msg) throws ParseException, JsonProcessingException {
         JSONObject data = (JSONObject) new JSONParser().parse(msg);
 
         String txnId = (String) data.get("txnId");
@@ -108,9 +108,18 @@ public class TransactionService implements UserDetailsService {
         String senderMsg = "Hi, your transaction with id "+txnId+" got "+walletUpdateStatus;
         JSONObject senderEmailObj = new JSONObject();
         senderEmailObj.put("email", senderEmail);
+        senderEmailObj.put("msg", senderMsg);
 
+        kafkaTemplate.send(CommonConstants.TRANSACTION_COMPLETED_TOPIC, objectMapper.writeValueAsString(senderEmailObj));
+
+        if(walletUpdateStatus == WalletUpdateStatus.SUCCESS){
+            String receiverMsg = "Hi, you have received Rs. "+amount+" from "+sender+" in your wallet linked with phone number "+receiverId;
+            JSONObject receiverEmailObj = new JSONObject();
+            receiverEmailObj.put("email", receiverEmail);
+            receiverEmailObj.put("msg", receiverMsg);
+            kafkaTemplate.send(CommonConstants.TRANSACTION_COMPLETED_TOPIC, objectMapper.writeValueAsString(senderEmailObj));
+        }
     }
-
 
     private JSONObject getUserFromUserService(String username){
         HttpHeaders httpHeaders = new HttpHeaders();
