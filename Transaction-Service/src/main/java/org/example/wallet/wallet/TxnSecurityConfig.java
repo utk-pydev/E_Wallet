@@ -25,6 +25,7 @@ public class TxnSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/txn/**").hasAuthority("usr")
                 .and()
                 .formLogin();
     }

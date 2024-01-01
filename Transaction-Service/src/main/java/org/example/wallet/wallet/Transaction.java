@@ -34,4 +34,5 @@ public class Transaction {
     @UpdateTimestamp
     private  Date updatedAt;
 
+    private TransactionStatus transactionStatus;
 }

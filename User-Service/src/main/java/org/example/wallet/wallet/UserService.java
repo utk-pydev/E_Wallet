@@ -27,7 +27,7 @@ public class UserService implements UserDetailsService {
     @Autowired
     KafkaTemplate<String, String>kafkaTemplate;
 
-    @Autowired
+        @Autowired
     ObjectMapper objectMapper;
 
     @Override

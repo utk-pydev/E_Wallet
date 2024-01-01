@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
 
     @Modifying
-    @Query("update Transaction t set t.transactionStatus=?2 where t.transactionId=?1")
+    @Query("update Transaction t set t.transactionStatus=?2 where t.transactionUUID=?1")
     void updateTxn(String txnId, TransactionStatus transactionStatus);
 
 }

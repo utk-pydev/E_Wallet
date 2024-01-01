@@ -24,9 +24,6 @@ public class WalletService {
     @Autowired
     KafkaTemplate<String, String>kafkaTemplate;
 
-
-    private static final Logger logger = (Logger) LoggerFactory.getLogger(WalletService.class);
-
     @KafkaListener(topics = CommonConstants.USER_CREATION_TOPIC, groupId = "group123")
     public void createWallet(String msg) throws ParseException, org.jose4j.json.internal.json_simple.parser.ParseException {
         JSONObject data = (JSONObject) new JSONParser().parse(msg);
@@ -55,8 +52,6 @@ public class WalletService {
         Double amount = (Double) data.get("amount");
         String txnId = (String) data.get("txnId");
 
-        logger.info("Updating wallets: sender - {}, receiver - {}, amount - {}, txnId - {}");
-
         Wallet senderWallet = walletRepository.findByPhoneNumber(sender);
         Wallet receiverWallet = walletRepository.findByPhoneNumber(receiver);
 
@@ -72,11 +67,13 @@ public class WalletService {
             return;
         }
         if(performTransaction(sender, receiver, amount)){
-
-        }
+            jsonObject.put("walletUpdateStatus", WalletUpdateStatus.SUCCESS);
+           }
         else{
-
+            jsonObject.put("walletUpdateStatus", WalletUpdateStatus.FAILED);
         }
+        kafkaTemplate.send(CommonConstants.WALLET_UPDATED_TOPIC, objectMapper.writeValueAsString(msg));
+
     }
 
     @Transactional
@@ -87,12 +84,7 @@ public class WalletService {
             // If everything goes well, the transaction is committed.
             return true;
         } catch (Exception e) {
-            // If an exception occurs, the transaction is rolled back.
-            // You can log the exception for debugging purposes.
-            e.printStackTrace();
             return false;
         }
     }
-
-
 }
