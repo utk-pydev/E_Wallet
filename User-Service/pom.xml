@@ -38,12 +38,6 @@
             <artifactId>hibernate-validator</artifactId>
             <version>7.0.1.Final</version> <!-- Use the latest version available -->
         </dependency>
-
-        <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>User-Service</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
         <dependency>
             <groupId>org.bitbucket.b_c</groupId>
             <artifactId>jose4j</artifactId>

@@ -27,7 +27,6 @@ public class UserRequest {
     @NotBlank(message = "New password is mandatory")
     private String password;
 
-
     private String Country;
     private String dob;
     private String authorities;
@@ -42,7 +41,6 @@ public class UserRequest {
                 .Country(Country)
                 .phoneNumber(phoneNumber)
                 .identifierValue(identifierValue)
-                .userIdentifier(userIdentifier)
                 .authorities(authorities)
                 .build();
     }
